@@ -9,11 +9,7 @@ import java.io.IOException;
 
 public class DateDeserializer extends StdDeserializer<Date> {
 
-    public DateDeserializer() {
-        super(Date.class);
-    }
-
-    public DateDeserializer(Class<?> vc) {
+    protected DateDeserializer(Class<?> vc) {
         super(vc);
     }
 

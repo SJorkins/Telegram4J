@@ -15,17 +15,13 @@ import java.util.Map;
 import java.util.UnknownFormatConversionException;
 import java.util.function.Predicate;
 
-public final class MessageDeserializer extends StdDeserializer<Message> {
+public class MessageDeserializer extends StdDeserializer<Message> {
     private final Map<Predicate<JsonNode>, Class<? extends Message>> TYPE_RESOLVER = new HashMap<Predicate<JsonNode>, Class<? extends Message>>() {{
         put(jsonNode -> jsonNode.has("text"), TextMessage.class);
         put(jsonNode -> jsonNode.has("photo"), PhotoMessage.class);
     }};
 
-    public MessageDeserializer() {
-        this(Message.class);
-    }
-
-    public MessageDeserializer(Class<?> vc) {
+    protected MessageDeserializer(Class<?> vc) {
         super(vc);
     }
 
