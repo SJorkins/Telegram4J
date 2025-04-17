@@ -28,7 +28,7 @@ public class TelegramApiValidator {
         }
 
         HttpStatus httpStatus = (HttpStatus) responseEntity.getStatusCode();
-        validateStatus(httpStatus, response);
+        validateResponseStatus(httpStatus, response);
     }
 
     public void validateUpdate(Update update) {
@@ -53,7 +53,7 @@ public class TelegramApiValidator {
         }
     }
 
-    private void validateStatus(@NotNull HttpStatus httpStatus, @NotNull TelegramResponse response) {
+    private void validateResponseStatus(@NotNull HttpStatus httpStatus, @NotNull TelegramResponse response) {
         int errorCode = response.getErrorCode();
         String description = response.getDescription();
 
