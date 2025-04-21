@@ -95,7 +95,7 @@ public final class LongPollingService {
 
     @SuppressWarnings("DataFlowIssue")
     private void doRequestUpdate(@NotNull String accessToken) {
-        String requestUrl = UrlUtil.buildGetUpdatesUrl(accessToken, lastProcessedOffset, config.getPollingTimeout());
+        String requestUrl = UrlUtil.buildGetUpdatesUrl(accessToken, lastProcessedOffset, config.getTimeout());
         try {
             ResponseEntity<GetUpdateResponse> responseEntity = restTemplate.getForEntity(requestUrl, GetUpdateResponse.class);
             TelegramApiValidator.validateResponse(responseEntity);
