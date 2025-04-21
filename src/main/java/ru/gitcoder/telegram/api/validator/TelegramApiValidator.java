@@ -21,6 +21,18 @@ import java.util.concurrent.TimeUnit;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TelegramApiValidator {
 
+    public static void validateAccessToken(@NotNull String accessToken) {
+        if (accessToken.isEmpty()) {
+            throw new IllegalArgumentException("The access token cannot be null or empty");
+        }
+        if (!accessToken.matches("^\\d+:[a-zA-Z0-9_-]+$")) {
+            throw new IllegalArgumentException("Invalid access token format");
+        }
+        if (accessToken.length() < 10) {
+            throw new IllegalArgumentException("The access token is too short");
+        }
+    }
+
     public void validateResponse(ResponseEntity<? extends TelegramResponse> responseEntity) {
         TelegramResponse response = responseEntity.getBody();
         if (response == null) {
