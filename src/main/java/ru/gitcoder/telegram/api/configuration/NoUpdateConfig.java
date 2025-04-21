@@ -1,8 +1,8 @@
 package ru.gitcoder.telegram.api.configuration;
 
-public class NoUpdateMethodConfig extends UpdateMethodConfig {
+public class NoUpdateConfig extends UpdateConfig {
 
-    public NoUpdateMethodConfig() {
+    public NoUpdateConfig() {
         super(null);
     }
 
