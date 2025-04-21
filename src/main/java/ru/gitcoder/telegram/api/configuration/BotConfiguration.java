@@ -13,14 +13,41 @@ import ru.gitcoder.telegram.api.proxy.Proxy;
 public final class BotConfiguration {
     private final String accessToken;
 
-    private final Proxy proxy;
-    private final UpdateMethodConfig updateMethodConfig;
+    private final UpdateConfig webhookConfig;
+    private final UpdateConfig pollingConfig;
 
-    public BotConfiguration(@NotNull String accessToken, @Nullable UpdateMethodConfig updateMethodConfig, @Nullable Proxy proxy) {
+    private final Proxy proxy;
+
+    public BotConfiguration(@NotNull String accessToken,
+                            @Nullable LongPollingConfig longPollingConfig,
+                            @Nullable WebhookConfig webhookConfig,
+                            @Nullable Proxy proxy) {
         this.accessToken = accessToken;
 
-        this.updateMethodConfig = updateMethodConfig == null ? new NoUpdateMethodConfig() : updateMethodConfig;
+        this.webhookConfig = webhookConfig == null ? new NoUpdateConfig() : webhookConfig;
+        this.pollingConfig = longPollingConfig == null ? new NoUpdateConfig() : longPollingConfig;
+
         this.proxy = proxy == null ? new NoProxy() : proxy;
+    }
+
+    public BotConfiguration(@NotNull String accessToken,
+                            @Nullable WebhookConfig webhookConfig,
+                            @Nullable Proxy proxy) {
+        this(accessToken, null, webhookConfig, proxy);
+    }
+
+    public BotConfiguration(@NotNull String accessToken,
+                            @Nullable LongPollingConfig longPollingConfig,
+                            @Nullable Proxy proxy) {
+        this(accessToken, longPollingConfig, null, proxy);
+    }
+
+    public BotConfiguration(@NotNull String accessToken, Proxy proxy) {
+        this(accessToken, null, null, proxy);
+    }
+
+    public BotConfiguration(@NotNull String accessToken) {
+        this(accessToken, null, null, null);
     }
 
     public static Builder builder() {
@@ -29,7 +56,10 @@ public final class BotConfiguration {
 
     public static class Builder {
         private String accessToken;
-        private UpdateMethodConfig updateMethodConfig;
+
+        private WebhookConfig webhookConfig;
+        private LongPollingConfig pollingConfig;
+
         private Proxy proxy;
 
         public Builder accessToken(String accessToken) {
@@ -38,12 +68,12 @@ public final class BotConfiguration {
         }
 
         public Builder webhookConfig(WebhookConfig webhookConfig) {
-            this.updateMethodConfig = webhookConfig;
+            this.webhookConfig = webhookConfig;
             return this;
         }
 
         public Builder pollingConfig(LongPollingConfig longPollingConfig) {
-            this.updateMethodConfig = longPollingConfig;
+            this.pollingConfig = longPollingConfig;
             return this;
         }
 
@@ -70,7 +100,7 @@ public final class BotConfiguration {
                 throw new IllegalStateException("Bot access token not set");
             }
 
-            return new BotConfiguration(accessToken, updateMethodConfig, proxy);
+            return new BotConfiguration(accessToken, pollingConfig, webhookConfig, proxy);
         }
     }
 }
